@@ -36,18 +36,22 @@ def printTree(node):
 def path_sum(node, targetSum):
     def dfsHelper(node, curSum):
         # 여기에 깊이 우선 탐색을 구현 해 봅시다.
-        arr = []
-        while node.left :
-            arr.append(node.val)
-            for i in arr :
-                print("print arr " + str(arr))
-                curSum += i
-                if curSum == targetSum :
-                    return True
-            node = node.left
-        #Node 쓰는거 정말 힘들다..
+        if node is None: # 리프노드인지 확인. LL에 node가 null이면 리프 노드이므로
+            if curSum == targetSum:
+                return True
+            else: 
+                return False
+        #leaf node가 아니면 바로 여기가 실행된다.
+        else:
+            curSum += node.val
+            is_left = dfsHelper(node.left, curSum)
+            is_right = dfsHelper(node.right, curSum)
+        return is_left or is_right
     dfsHelper(node, 0)
-    return False
+    
+    return dfsHelper(node, 0)
+
+    #DFS에 CBT까지 더해지니까 힘들구만
     
 def main():
     node = listToCompleteBinaryTree([1,2,3,4,5,6,7])
@@ -60,7 +64,7 @@ if __name__ == "__main__":
 
 
 
-#트리의 경로의 합
+#Q. 트리의 경로의 합
 #완벽한 이진 트리가 주어졌다고 합시다. 그리고 어떤 합 숫자가 주어졌다고 합시다.
 # 이때, 이 트리의 루트(root)에서부터 잎(leaf)까지의 가능한 경로들을 고려해서,
 # 이 경로들 중 최소 하나 이상의 해당 경로상의 value들의 합산과 주어진 합 숫자가 일치하면 True를,
