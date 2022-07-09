@@ -36,23 +36,24 @@ def toLinkedList(lst):
 ####################################################################################################################################
 
 def deleteNode(ll, valToDelete):
-    num = ll.head
-    #nextNode = num.next
     #삭제할 데이터가 첫번째 data일경우
-    if num.val == valToDelete:
-        ll.head = num.next
-        return ll
+    if ll.head.val == valToDelete:
+        ll.head = ll.head.next
+
+    curNode = ll.head
+    nextNode = curNode.next
+
     #다음값이 존재할경우
-    while num.next :
-        if num.next.val == valToDelete :
-            num.next = num.next.next
-            return ll
-        else:
-            num = num.next
-    
-    #이렇게 하면 80점이 나온당
-    
-    return ll
+    while nextNode :
+        if nextNode.val == valToDelete :
+            curNode.next = nextNode.next
+            
+            if nextNode == ll.tail:
+                ll.tail = curNode
+
+            break
+        curNode = curNode.next
+        nextNode = curNode.next
 
 def main():
     nums = [2,8,19,37,4,5]
