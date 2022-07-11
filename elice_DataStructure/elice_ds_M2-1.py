@@ -7,6 +7,17 @@
 # 추가된 문자가 이미 리스트에 존재하던 문자 일 수도 있습니다.
 
 def findDifference(str1, str2):
+    arr1 = list(str1)
+    arr2 = list(str2)
+
+    arr1.sort()
+    arr2.sort()
+
+    for i in range(len(arr2)-1, -1, -1):
+        if (arr1[i-1] == arr2[i]) :
+            continue
+        else:
+            return arr2[i]
     return ''
 
 def main():
