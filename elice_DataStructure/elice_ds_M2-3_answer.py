@@ -13,28 +13,31 @@
 # 모든 문자는 영어 소문자라고 가정합니다.
 
 def wordPattern(pattern, strList):
-    meet = True
+    if len(pattern) != len(strList):
+        return False
+    patternLst = list(pattern)
+    
     patternDic = {}
-
-    if len(pattern) != len(strList) :
-        meet = False
-        return meet
-
-    for i in range(len(pattern)) :
-        patternDic[strList[i]] = pattern[i]
-
-    for j in range(len(strList)) :
-        if pattern[j] == patternDic[strList[j]] :
-            continue
+    for i in range(len(patternLst)):
+        # 키가 패턴의 문자, value가 문자열인 딕셔너리 생성 및 대조
+        patternCh = patternLst[i]
+        word = strList[i]
+        
+        if patternCh in patternDic:
+            if word != patternDic[patternCh]:
+                return False
         else:
-            meet = False
-            return meet
-    return meet
+            patternDic[patternCh] = word
+    return True
+
+
+
 
 def main():
     print(wordPattern("aabb", ["elice", "elice", "alice", "alice"])) # should return True
     print(wordPattern("abab", ["elice", "elice", "alice", "alice"])) # should return False
     
+
 
 if __name__ == "__main__":
     main()
