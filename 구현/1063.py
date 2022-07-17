@@ -1,9 +1,10 @@
 import sys
 
-f = sys.stdin
+f = open("C:/algorithm/algo/구현/input.txt", 'r')
+#f = sys.stdin
 
 initInfo = list(f.readline().strip().split(' '))
-xDic = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'G': 9}
+xDic = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8}
 xReverse = {v:k for k,v in xDic.items()}
 n = int(initInfo[2])
 
@@ -12,43 +13,40 @@ for i in range(n) :
     dirArr.append(f.readline().strip())
 
 def moveFunc(pos, direction):
-    memo = [pos[0], pos[1]]
-    if direction  == 'T' :
-        pos[0] += 1
-    elif direction == 'B' :
-        pos[0] -= 1
-    elif direction  == 'R' :
-        pos[1] += 1
-    elif direction == 'L' :
-        pos[1] -= 1
-    elif direction  == 'RT' :
-        pos[0] += 1
-        pos[1] += 1
-    elif direction == 'RB' :
-        pos[0] -= 1
-        pos[1] += 1
-    elif direction  == 'LT' :
-        pos[0] += 1
-        pos[1] -= 1
-    elif direction == 'LB' :
-        pos[0] -= 1
-        pos[1] -= 1
+   
+    x = pos[0]
+    y = pos[1]
+    dxy = {
+        'R' : (x + 1, y), 'L' : (x - 1, y),
+        'T' : (x, y + 1), 'B' : (x, y - 1),
+        'RT' : (x + 1, y + 1), 'RB' : (x + 1, y - 1),
+        'LB' : (x - 1, y - 1), 'LT' : (x - 1, y + 1)
+    }
 
-    if pos[0] > 9 or pos[0] < 1 :
-        return memo
-    elif pos[1] > 9 or pos[1] < 1 :
-        return memo
+    if dxy[direction][0] > 8 or dxy[direction][0] < 1 :
+        return pos
+    elif dxy[direction][1] > 8 or dxy[direction][1] < 1 :
+        return pos
 
-    return pos
+    return dxy[direction]
+
+def shallIMove(kpos, spos, d):
+    mkpos = moveFunc(kpos, d)
+    if mkpos == spos : 
+        mspos = moveFunc(spos, d)
+        if spos == mspos : 
+            return [kpos, spos]
+        return [mkpos, mspos]
+    return [mkpos, spos]
 
 def main():
-    kpos = [int(xDic[initInfo[0][0]]), int(initInfo[0][1])]
-    spos = [int(xDic[initInfo[1][0]]), int(initInfo[1][1])]
+    kpos = (int(xDic[initInfo[0][0]]), int(initInfo[0][1]))
+    spos = (int(xDic[initInfo[1][0]]), int(initInfo[1][1]))
 
     for d in dirArr :
-        kpos = moveFunc(kpos, d)
-        if kpos == spos : 
-            spos = moveFunc(spos, d)
+        temp = shallIMove(kpos, spos, d)
+        kpos = temp[0]
+        spos = temp[1]
 
     print(xReverse[kpos[0]], kpos[1], sep='')
     print(xReverse[spos[0]], spos[1], sep='')
