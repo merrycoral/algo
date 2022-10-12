@@ -1,5 +1,4 @@
 import heapq
-from turtle import window_height
 
 mygraph = {
     'A' : {'B':8, }
